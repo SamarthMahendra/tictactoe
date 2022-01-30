@@ -12,14 +12,22 @@ class tictactoe:
         ]
         ''' setting intial color for matrix'''
         self.steroidboard=[[(155, 149, 163)]*3 for _ in range(3)]
+        self.refer=[[(0,0),(0,1),(0,2)],
+                    [(1,0),(1,1),(1,2)],
+                    [(2,0),(2,1),(2,2)]
+                    ]
         self.uv=" "
         self.cv=" "
 
     def inputhuman(self):
         #inputting co-ordinates from the user
         print("Enter Co-ordinates :")
-        i=int(input("Enter i : "))
-        j=int(input("enter j : "))
+
+        print("------ you can refer this matrix for co-ordniates-----")
+        for rows in self.refer:
+            print(rows)
+        i = int(input("Enter i : "))
+        j = int(input("enter j : "))
         if self.board[i][j] == " " and i<3 and j<3:
             self.board[i][j]=self.uv
 
@@ -33,23 +41,27 @@ class tictactoe:
         for i in range(3):
             for j in range(3):
                 if self.board[i][j]!=" ":
-                    if self.board[i][j]=="x" or self.board[i][j]=="X":
+                    if self.board[i][j]=="X":
                         self.steroidboard[i][j]=(163, 108, 93)
                     else:
-                        self.steroidboard[i][j] = (118, 90, 158)
+                        self.steroidboard[i][j]=(118, 90, 158)
         plt.imshow(self.steroidboard, interpolation='nearest')
-        plt.show()
+
+        plt.show(block=True)
+        plt.pause(1)  # 3 seconds, I use 1 usually
+        plt.close("all")
 
 
         for rows in self.board:
             print(rows)
+
     def minimax(self,board,depth,ismaximizing):
         result = self.checkwinner()
-        if result =="x" :
+        if result =="X" :
             score= -1
 
             return score
-        elif result =="o" :
+        elif result =="O" :
             score= +1
 
             return score
@@ -63,7 +75,7 @@ class tictactoe:
             for i in range(3):
                 for j in range(3):
                     if board[i][j] == " ":
-                        board[i][j]="x"
+                        board[i][j]="X"
                         score = self.minimax(board, depth+1, False)
                         board[i][j] = " "
                         bestscore = min(bestscore, score)
@@ -73,7 +85,7 @@ class tictactoe:
             for i in range(3):
                 for j in range(3):
                     if board[i][j] == " ":
-                        board[i][j]="o"
+                        board[i][j]="O"
                         score = self.minimax(board, depth+1, True)
                         board[i][j] = " "
                         bestscore = max(bestscore, score)
@@ -136,8 +148,9 @@ class tictactoe:
         c=random.choice([0, 1])
         if c==0:
             print("Computer won the toss")
-            self.cv=random.choice(["X", "O"])
-            if self.cv=="X":
+            cvv=random.choice(["X", "O"])
+            self.cv=cvv.upper()
+            if self.cv=="X" or self.cv=="x":
                 self.uv="O"
             else:
                 self.uv="X"
@@ -145,7 +158,12 @@ class tictactoe:
         else:
             print(" You have won the toss")
             print("Enter Your Character")
-            self.uv=str(input())
+            uv=str(input())
+            self.uv=uv.upper()
+            if self.uv=="X":
+                self.cv="O"
+            else:
+                self.uv="X"
 
 
         while n < 10:
