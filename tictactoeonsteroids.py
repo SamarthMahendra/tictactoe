@@ -160,6 +160,7 @@ class tictactoe:
             print("Enter Your Character")
             uv=str(input())
             self.uv=uv.upper()
+            '''converting to uppercase'''
             if self.uv=="X":
                 self.cv="O"
             else:
